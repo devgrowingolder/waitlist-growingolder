@@ -1,38 +1,31 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
-// config
+import { Logo } from "./Atoms";
 import config from "@/config/general";
 
 const Header = () => {
   return (
-    <header className="flex-col sm:flex-row flex justify-between items-start">
-      <Image src={"/logo.svg"} width={180} height={60} alt={config.title} />
-      <nav>
-        <ul className="flex sm:mt-0 mt-4 items-center lg:gap-7 gap-3 font-medium text-base sm:text-lg">
-          <li className="text-black">
-            <Link href={config.socials.twitter} passHref legacyBehavior>
-              <a
-                className="px-5 py-2 rounded"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Twitter
-              </a>
+    <header className="sticky top-0 z-50 border-b border-sand/60 bg-eggshell/85 backdrop-blur-md">
+      <div className="container-page flex h-[72px] items-center justify-between gap-4">
+        <Logo />
+
+        <nav aria-label="Primary" className="hidden items-center gap-8 lg:flex">
+          {config.nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-base font-medium text-inkSoft transition-colors hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-eggshell"
+            >
+              {item.label}
             </Link>
-          </li>
-          <li className="bg-activeButton text-white rounded py-2">
-            <Link href={config.subscribeForm} passHref legacyBehavior>
-              <a
-                className="px-5 py-2 rounded"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Register
-              </a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+          ))}
+        </nav>
+
+        <a href="#waitlist" className="btn-primary px-6 py-3 text-[0.95rem]">
+          Join the waitlist
+        </a>
+      </div>
     </header>
   );
 };

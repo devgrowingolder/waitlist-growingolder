@@ -1,49 +1,59 @@
 "use client";
 
 import { useState } from "react";
-// config
 import config from "@/config/general";
 
 const findRequestURL = (mail: string) => {
   const formURL = config.subscribeForm.split("/");
   const getNumbers = formURL.filter((item) => Number(item) && item);
-
   const accountID = getNumbers[0];
   const formID = getNumbers[1];
-
-  const requestURL = `https://assets.mailerlite.com/jsonp/${accountID}/forms/${formID}/subscribe?fields[email]=${mail}`;
-
-  return requestURL;
+  return `https://assets.mailerlite.com/jsonp/${accountID}/forms/${formID}/subscribe?fields[email]=${encodeURIComponent(
+    mail
+  )}`;
 };
 
-const Form = () => {
-  const [mail, setMail] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+type Status = "idle" | "loading" | "success" | "error";
 
-  const onSubmit = (e: any) => {
+interface FormProps {
+  note?: string;
+  className?: string;
+}
+
+const Form: React.FC<FormProps> = ({ note, className = "" }) => {
+  const [mail, setMail] = useState("");
+  const [status, setStatus] = useState<Status>("idle");
+  const [message, setMessage] = useState("");
+
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    fetch(findRequestURL(mail), {
-      method: "POST",
-    })
+    if (!mail) return;
+    setStatus("loading");
+    setMessage("");
+    fetch(findRequestURL(mail), { method: "POST" })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          setMessage("Thanks for subscribing!");
+          setStatus("success");
+          setMessage("You're on the list — welcome. We'll be in touch soon. 🌿");
+          setMail("");
         } else {
-          setMessage("Something went wrong, please try again.");
+          setStatus("error");
+          setMessage("Something went wrong. Please try again.");
         }
       })
-      .catch(() => setMessage("Something went wrong, please try again."))
-      .finally(() => {
-        setMail("");
+      .catch(() => {
+        setStatus("error");
+        setMessage("Something went wrong. Please try again.");
       });
   };
+
+  const isSuccess = status === "success";
+
   return (
-    <form onSubmit={onSubmit}>
-      <div className="relative">
-        <div className="min-w-0 flex-1">
+    <div className={className}>
+      <form onSubmit={onSubmit} noValidate>
+        <div className="flex flex-col gap-2 rounded-lg border border-sand bg-white p-2 shadow-soft sm:flex-row sm:items-center sm:rounded-pill">
           <label htmlFor="email" className="sr-only">
             Email address
           </label>
@@ -51,26 +61,38 @@ const Form = () => {
             type="email"
             name="fields[email]"
             autoComplete="email"
-            aria-invalid="false"
+            required
             id="email"
             placeholder="Enter your email"
-            className="form-control block w-full rounded-sm bg-gray px-4 py-5 text-base text-black placeholder-gray-500 focus:outline-none"
+            className="w-full flex-1 rounded-pill bg-transparent px-5 py-3.5 text-base text-ink placeholder-inkMuted focus:outline-none"
             value={mail}
             onChange={(e) => setMail(e.target.value)}
+            disabled={isSuccess}
           />
-        </div>
-        <div className="mt-1 ml-2 sm:mt-3 sm:ml-3 flex-1 sm:flex-auto w-full sm:w-auto">
           <button
             type="submit"
-            className="relative sm:absolute right-2 sm:top-2 w-full sm:w-auto block  rounded-sm bg-activeButton py-3 px-4 font-medium text-white shadow hover:bg-activeButton disabled:cursor-not-allowed"
-            disabled={mail === "" || loading}
+            className="btn-primary w-full shrink-0 sm:w-auto"
+            disabled={mail === "" || status === "loading" || isSuccess}
           >
-            Join Waitlist
+            {status === "loading" ? "Joining…" : isSuccess ? "You're in ✓" : "Join the waitlist"}
           </button>
         </div>
-      </div>
-      <span className="text-sm px-2 italic text-red-500">{message}</span>
-    </form>
+      </form>
+
+      {message ? (
+        <p
+          role="status"
+          aria-live="polite"
+          className={`mt-3 px-1 text-sm font-medium ${
+            status === "error" ? "text-[#9e2515]" : "text-forest"
+          }`}
+        >
+          {message}
+        </p>
+      ) : note ? (
+        <p className="mt-3 px-1 text-sm text-inkMuted">{note}</p>
+      ) : null}
+    </div>
   );
 };
 
