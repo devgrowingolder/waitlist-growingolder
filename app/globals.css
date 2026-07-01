@@ -2,16 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-div, p {
-  animation: ease-in-out animate 0.2s;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #FAF6EC;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-fraunces), Georgia, serif;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: #D0EEE0;
+    color: #052E1B;
+  }
 }
 
-@keyframes animate {
-  from {
-    opacity: 0.4;
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-container px-5 sm:px-8;
   }
 
-  to {
-    transform: 1;
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-forest;
   }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-pill bg-forest px-7 py-3.5 text-base font-semibold text-white
+      transition-colors duration-200 hover:bg-forestHover
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-eggshell
+      disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-pill border border-forest/25 bg-white px-7 py-3.5 text-base font-semibold text-forest
+      transition-colors duration-200 hover:bg-mint
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-eggshell;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal 0.5s ease-out both;
+  }
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }

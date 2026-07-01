@@ -1,61 +1,73 @@
-"use client";
-import config from "@/config/general";
-import Image from "next/image";
 import Link from "next/link";
+import { Logo } from "./Atoms";
+import config from "@/config/general";
 
 const Footer = () => {
   return (
-    <div className="mb-15">
-      <div className="bg-grayBackground rounded-md">
-        <div className="w-11/12 xl:w-[1050px] mx-auto flex md:flex-row flex-col justify-between md:gap-0 gap-12 items-start py-16">
-          <div className="flex flex-col gap-2">
-            <Image
-              src={"/logo.svg"}
-              width={180}
-              height={60}
-              alt={config.title}
-            />
-            <p className="w-[300px] text-activeButton">{config.description}</p>
+    <footer className="border-t border-sand/70 bg-cream/60">
+      <div className="container-page py-14">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div className="max-w-sm">
+            <Logo />
+            <p className="mt-4 text-base leading-relaxed text-inkSoft">
+              A warm, simple place to find senior care and senior living, organize
+              the everyday, and stay close to the people you love.
+            </p>
           </div>
+
           <div>
-            <span className="uppercase text-[#8d8d8d] font-semibold">
-              Links
+            <span className="text-sm font-semibold uppercase tracking-[0.12em] text-inkMuted">
+              Explore
             </span>
-            <ul className="font-medium flex flex-col gap-2 mt-4 text-activeButton">
-              <li>How it works</li>
-              <li>Price</li>
-              <li>FAQ</li>
-              <li>Support</li>
+            <ul className="mt-4 space-y-2.5 text-base text-inkSoft">
+              {config.nav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="transition-colors hover:text-forest">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <a href="#waitlist" className="transition-colors hover:text-forest">
+                  Join the waitlist
+                </a>
+              </li>
             </ul>
           </div>
+
           <div>
-            <span className="uppercase text-[#8d8d8d] font-semibold">
-              Legal
+            <span className="text-sm font-semibold uppercase tracking-[0.12em] text-inkMuted">
+              Get in touch
             </span>
-            <ul className="font-medium flex flex-col gap-2 mt-4 text-activeButton">
-              <li>Terms of services</li>
-              <li>Privact policy</li>
+            <ul className="mt-4 space-y-2.5 text-base text-inkSoft">
+              <li>
+                <a href={`mailto:${config.socials.email}`} className="transition-colors hover:text-forest">
+                  {config.socials.email}
+                </a>
+              </li>
+              <li>
+                <Link
+                  href={config.socials.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-forest"
+                >
+                  Instagram
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
-        <div className="w-11/12 xl:w-[1050px] mx-auto pb-16">
-          © 2023 -
-          <Link
-            href="https://twitter.com/beratbuilds"
-            passHref
-            legacyBehavior
-          >
-            <a
-              target="_blank"
-              className="underline underline-offset-2"
-              rel="noopener noreferrer"
-            >
-              #buildinpublic
-            </a>
-          </Link>
+
+        <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-sand/70 pt-6 text-sm text-inkMuted sm:flex-row sm:items-center">
+          <p>© 2026 Growing Older. Made with care.</p>
+          <div className="flex gap-6">
+            <span className="cursor-default">Privacy</span>
+            <span className="cursor-default">Terms</span>
+          </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

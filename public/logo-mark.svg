@@ -1,0 +1,7 @@
+<svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Growing Older">
+  <rect width="44" height="44" rx="13" fill="#0B663D"/>
+  <circle cx="22" cy="27.5" r="4.4" fill="#E7B54A"/>
+  <path d="M9 27.5C9 20.6 14.8 15 22 15C29.2 15 35 20.6 35 27.5" stroke="#F7EBCB" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M22 15C22 15 22 10.4 25.6 8.4C29.2 6.4 31.6 7.2 31.6 7.2C31.6 7.2 31.2 11.4 27.8 13.4C24.6 15.3 22 15 22 15Z" fill="#13AA65"/>
+  <path d="M22 15C22 15 22 11.7 19.4 10.2C16.8 8.7 15 9.3 15 9.3C15 9.3 15.3 12.4 17.9 13.9C20.2 15.2 22 15 22 15Z" fill="#87D2B0"/>
+</svg>
